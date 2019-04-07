@@ -51,7 +51,7 @@ namespace MedianFinder.Managers
             foreach (var data in _fileService.IterateFile(result.DataColumnName))
             {
                 //Move to next iteration as value is not a decimal
-                if (!Decimal.TryParse(data, out decimal dataValue)) continue;
+                if (!decimal.TryParse(data, out decimal dataValue)) continue;
 
                 //Let's find out if our value is within variance range
                 bool inRange = _calcService.IsValueInMedianRange(result.Median, dataValue, lowerVariancePC, upperVariancePC);

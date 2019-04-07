@@ -34,6 +34,12 @@ namespace MedianFinder.Services
 
         public bool IsValueInMedianRange(decimal median, decimal value, decimal lowerVariancePC, decimal upperVariancePC)
         {
+            //If the median is negative then invert the MAX and MIN Values             
+            if (median < 0)
+            {
+                upperVariancePC *= -1; lowerVariancePC *= -1;
+            }
+
             decimal MAXLIMIT = median * (1 + (upperVariancePC / 100)); //Get upper bound by upper percentage
             decimal MINLIMIT = median * (1 - (upperVariancePC / 100)); //Get lower bound by lower percentage
 
