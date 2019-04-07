@@ -7,6 +7,9 @@ namespace MedianFinder.Test.InputData
     {
         public IEnumerator<object[]> GetEnumerator()
         {
+            //THE TEST DATA STRUCTURE
+            //IEnumerable<string> dataValues, decimal median
+
             //sorted and odd count
             yield return new object[] { new string[] { "0.0", "1.0", "2.0" }, 1 };
             //sorted and even count

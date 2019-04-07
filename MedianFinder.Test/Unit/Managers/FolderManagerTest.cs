@@ -14,6 +14,7 @@ namespace MedianFinder.Test.Unit.Managers
         public FolderManagerTest()
         {
             moqFolderService = new Mock<IFolderService>();
+            Startup.ConfigureServices();
         }
 
         public void Dispose()
@@ -37,14 +38,12 @@ namespace MedianFinder.Test.Unit.Managers
         }
 
         [Theory]
-        [MemberData(nameof(GetFiles))]
-        //[InlineData(new object[] { new string[] { "file1.csv", "file2.csv", "file3.csv" } })]
+        [MemberData(nameof(GetFiles))]        
         public void GetAllFiles_returns_all_valid_files_based_on_configured_filetypes(IEnumerable<string> filesList, int countOfFiles)
         {
             //given
             moqFolderService.Setup(m => m.GetFileNames(It.IsAny<string>(), It.Is<string>(p => p == "*.csv"))).Returns(filesList);
             var sut = new FolderManager(moqFolderService.Object);
-            Startup.ConfigureServices();
 
             //when
             var actual = sut.GetAllFiles(Startup.Settings.Path, Startup.Settings.FileFormat.Ext, Startup.Settings.FileTypes);

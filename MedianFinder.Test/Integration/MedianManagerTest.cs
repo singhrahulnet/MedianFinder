@@ -23,6 +23,7 @@ namespace MedianFinder.Test.Integration
             _fileService = new FileService();
             _dataProcessor = new DataProcessor(_calculationService, _fileService);
             _outputService = new ConsoleOutputService();
+            Startup.ConfigureServices();
         }
         public void Dispose()
         {
@@ -37,16 +38,13 @@ namespace MedianFinder.Test.Integration
         public void StartProcess_returns_number_of_file_processed()
         {
             //given
-
             var sut = new MedianManager(_folderManager, _dataProcessor, _outputService);
-            Startup.ConfigureServices();
 
             //When
             var numberofFilesProcessed = sut.StartProcess();
 
             //Then
             Assert.IsType<int>(numberofFilesProcessed);
-
         }
     }
 }

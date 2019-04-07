@@ -15,9 +15,8 @@ namespace MedianFinder.Services
     class FileService : IFileService
     {
         private List<string> _headers;
-        private string _currentLine;
-        private string _filePath;
-        private string _fileDelimiter;
+        private string _currentLine, _filePath, _fileDelimiter;
+        
         private StreamReader FileReader { get; set; }
    
         public void InitFileReader(string filePath, string fileDelimiter)
@@ -32,10 +31,12 @@ namespace MedianFinder.Services
             //Save the header values for later usage
             _headers = !string.IsNullOrEmpty(headerString) ? headerString.Split(_fileDelimiter).ToList() : throw new InvalidOperationException("Header row is missing");
         }
+
         public string FileName
         {
             get => Path.GetFileName(_filePath);
         }
+
         public IEnumerable<string> IterateFile(string columnName)
         {
             //Always good to validate the input parameter in public methods
@@ -48,6 +49,7 @@ namespace MedianFinder.Services
                 yield return row.Split(_fileDelimiter)[columnIndex];
             }
         }
+
         public string GetValueFromCurrentLine(string columnName)
         {
             //Always good to validate the input parameter in public methods
@@ -59,6 +61,7 @@ namespace MedianFinder.Services
             //We already have the current line as a string. Let's grab our value
             return _currentLine.Split(_fileDelimiter)[columnIndex];
         }
+
         private IEnumerable<string> IterateFile()
         {
             using (FileReader = File.OpenText(_filePath))

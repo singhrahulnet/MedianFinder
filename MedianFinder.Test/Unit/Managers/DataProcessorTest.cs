@@ -17,6 +17,7 @@ namespace MedianFinder.Test.Unit.Managers
         {
             moqCalcService = new Mock<ICalculationService>();
             moqFileService = new Mock<IFileService>();
+            Startup.ConfigureServices();
         }
         public void Dispose()
         {
@@ -25,30 +26,37 @@ namespace MedianFinder.Test.Unit.Managers
         }
         public static IEnumerable<object[]> GetInputParams()
         {
-            yield return new object[] { new string[] { "0.0", "1.0", "2.0" }, 1, "C:\\TOU_123.csv", "," };
+            yield return new object[] { new string[] { "0.0", "1.0", "2.0" }, 3 };
 
+            //Ignore invalid data in stream. 
+            yield return new object[] { new string[] { "kkk", "ppp", "0.9", "1.0", "YYY--", "1.2", "2.0" }, 4 };
+
+            //Empty stream
+            yield return new object[] { new string[] { }, 0 };
         }
 
         [Theory]
         [MemberData(nameof(GetInputParams))]
-        public void GetMedianVariance_returns_correct_variance_count(IEnumerable<string> dataValues, decimal median, string filePath, string delimiter)
+        public void GetMedianVariance_returns_correct_variance_count(IEnumerable<string> dataValues, int elementCount)
         {
             //Given            
-            decimal lowerVariancePC = 20, upperVariancePC = 20;
+            decimal lowerVariancePC = 20, upperVariancePC = 20, median = 1;
+            string filePath = "C:\\TOU_123csv", delimiter = ",";
 
-            moqFileService.Setup(m => m.InitFileReader(filePath, It.IsAny<string>())).Verifiable();
+            moqFileService.Setup(m => m.InitFileReader(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             moqFileService.Setup(m => m.FileName).Returns("TOU_123.csv");
             moqFileService.Setup(m => m.IterateFile(It.IsAny<string>())).Returns(dataValues);
             moqCalcService.Setup(m => m.GetMedian(It.IsAny<IEnumerable<string>>())).Returns(median);
-            moqCalcService.Setup(m => m.IsValueInMedianRange(median, It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(true);
+            moqCalcService.Setup(m => m.IsValueInMedianRange(It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(true);
+
             var sut = new DataProcessor(moqCalcService.Object, moqFileService.Object);
-            Startup.ConfigureServices();
+
             //When
             var actual = sut.GetMedianVariance(filePath, delimiter, lowerVariancePC, upperVariancePC);
 
             //Then
             Assert.IsType<MedianVarianceResult>(actual);
-            //To-do-more-assert
+            Assert.Equal(elementCount, actual.VarianceData.Count);
         }
     }
 }

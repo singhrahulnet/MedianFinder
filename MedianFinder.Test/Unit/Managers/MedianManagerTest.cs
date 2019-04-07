@@ -24,6 +24,7 @@ namespace MedianFinder.Test.Unit.Managers
             moqFolderManager = new Mock<IFolderManager>();
             moqDataProcessor = new Mock<IDataProcessor>();
             moqOutPutService = new Mock<IOutputService>();
+            Startup.ConfigureServices();
         }
 
         public void Dispose()
@@ -46,7 +47,6 @@ namespace MedianFinder.Test.Unit.Managers
             var sut = new MedianManager(moqFolderManager.Object, moqDataProcessor.Object, moqOutPutService.Object);
 
             //when
-            Startup.ConfigureServices();
             sut.StartProcess();
 
             //then
