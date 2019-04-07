@@ -12,7 +12,9 @@ namespace MedianFinder.Services
     {
         public void OutputResult(MedianVarianceResult result)
         {
-            if (result == null) throw new ArgumentNullException(nameof(result));
+            //Always good to validate the input parameter in public methods
+            if (result == null) return;
+
             foreach (var row in result.VarianceData)
             {
                 Console.WriteLine($"{result.FileName} {row.Date} {row.Value} {result.Median}");

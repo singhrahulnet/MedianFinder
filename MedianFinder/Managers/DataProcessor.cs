@@ -22,23 +22,37 @@ namespace MedianFinder.Managers
 
         public MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC)
         {
-            if (string.IsNullOrEmpty(filepath)) throw new ArgumentNullException("File path is empty");
+            //Always good to validate the input parameter in public methods
+            if (string.IsNullOrEmpty(filepath) || string.IsNullOrEmpty(fileDelimiter)) return null;
 
+            MedianVarianceResult result = null;
+
+            result = PopulateMedianVariance(filepath, fileDelimiter, lowerVariancePC, upperVariancePC);
+
+            return result;
+        }
+
+        private MedianVarianceResult PopulateMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC)
+        {
+            //Init file reader so that headers/path/delimiter are pre-populated and saved for later usage
             _fileService.InitFileReader(filepath, fileDelimiter);
 
+            //Init result with fileName.
             var result = new MedianVarianceResult
             {
                 FileName = _fileService.FileName,
                 VarianceData = new List<VarianceData>()
             };
 
+            //Let's calculate the median. Pass in the Data Column Name from Model
             result.Median = _calcService.GetMedian(_fileService.IterateFile(result.DataColumnName));
 
+            //Iterate each row now
             foreach (var data in _fileService.IterateFile(result.DataColumnName))
             {
                 //Move to next iteration as value is not a decimal
-                if (!Decimal.TryParse(data, out decimal dataValue)) continue; 
-                
+                if (!Decimal.TryParse(data, out decimal dataValue)) continue;
+
                 //Let's find out if our value is within variance range
                 bool inRange = _calcService.IsValueInMedianRange(result.Median, dataValue, lowerVariancePC, upperVariancePC);
 
@@ -47,6 +61,9 @@ namespace MedianFinder.Managers
                     result.VarianceData.Add(new VarianceData
                     {
                         Value = dataValue,
+
+                        //Populate the date from the line being read
+                        //No need to iterate over again as fileService keeps the current line saved
                         Date = _fileService.GetValueFromCurrentLine(result.DateTimeColumnName)
                     }
                     );

@@ -36,7 +36,7 @@ namespace MedianFinder.Test.Managers
 
             //when
             Startup.ConfigureServices();
-            var actual = sut.GetAllFiles(Startup.Settings.Path, Startup.Settings.FileTypes);
+            var actual = sut.GetAllFiles(Startup.Settings.Path, Startup.Settings.FileFormat.Ext, Startup.Settings.FileTypes);
 
             //then
             Assert.IsAssignableFrom<IEnumerable<string>>(actual);

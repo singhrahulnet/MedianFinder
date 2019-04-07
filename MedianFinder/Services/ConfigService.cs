@@ -18,10 +18,20 @@ namespace MedianFinder.Services
 
         public TResult GetSection<TResult>(string sectionName) where TResult : class
         {
-            if (string.IsNullOrEmpty(sectionName)) throw new ArgumentNullException("Section name is empty");
+            //Always good to validate the input parameter in public methods
+            if (string.IsNullOrEmpty(sectionName)) return null;
 
-            var section = Activator.CreateInstance(typeof(TResult)) as TResult;
-            _configuration.GetSection(sectionName).Bind(section);
+            TResult section = null;
+
+            try
+            {
+                section = Activator.CreateInstance(typeof(TResult)) as TResult;
+                _configuration.GetSection(sectionName).Bind(section);
+            }
+            catch (Exception)
+            {
+                // Yell    Log    Catch  Throw     
+            }
 
             return section;
         }

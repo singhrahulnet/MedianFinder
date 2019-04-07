@@ -23,13 +23,18 @@ namespace MedianFinder.Managers
         public void StartProcess()
         {
             //Get all valid files paths from the source folder
-            var filePaths = _folderManager.GetAllFiles(Startup.Settings.Path, Startup.Settings.FileTypes);
+            var filePaths = _folderManager.GetAllFiles(Startup.Settings.Path, 
+                                                       Startup.Settings.FileFormat.Ext, 
+                                                       Startup.Settings.FileTypes);
 
             try
             {
                 foreach (string filePath in filePaths)
                 {
-                    var response = _dataProcessor.GetMedianVariance(filePath,Startup.Settings.FileDelimiter, Startup.Settings.LowerVariancePC, Startup.Settings.UpperVariancePC);
+                    var response = _dataProcessor.GetMedianVariance(filePath,
+                                                        Startup.Settings.FileFormat.Delimiter,
+                                                        Startup.Settings.LowerVariancePC,
+                                                        Startup.Settings.UpperVariancePC);
 
                     //print now and move to next file.
                     _outputService.OutputResult(response);

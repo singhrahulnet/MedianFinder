@@ -12,17 +12,24 @@ namespace MedianFinder.Services
     {
         public IEnumerable<string> GetFileNames(string sourceFolderPath, string searchPattern)
         {
-            if (string.IsNullOrEmpty(sourceFolderPath)) throw new ArgumentNullException("Source folder path is empty");
+            //Always good to validate the input parameter in public methods
+            if (string.IsNullOrEmpty(sourceFolderPath)) return null;
+
             IEnumerable<string> fileNames = null;
             try
             {
-                fileNames = Directory.EnumerateFiles(sourceFolderPath, searchPattern);
+                fileNames = GetAllFileNames(sourceFolderPath, searchPattern);
             }
             catch (Exception)
             {
                 // Yell    Log    Catch  Throw     
             }
             return fileNames;
+        }
+
+        private IEnumerable<string> GetAllFileNames(string sourceFolderPath, string searchPattern)
+        {
+            return Directory.EnumerateFiles(sourceFolderPath, searchPattern);
         }
     }
 }

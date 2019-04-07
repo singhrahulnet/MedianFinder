@@ -7,20 +7,21 @@ namespace MedianFinder.Managers
 {
     public interface IFolderManager
     {
-        IEnumerable<string> GetAllFiles(string sourceFolderPath, Dictionary<string, string> fileTypes);
+        IEnumerable<string> GetAllFiles(string sourceFolderPath, string fileExt, Dictionary<string, string> fileTypes);
     }
     public class FolderManager : IFolderManager
     {
         private readonly IFolderService _folderService;
-        private readonly string fileExt = "*.csv";
+        
         public FolderManager(IFolderService folderService)
         {
             _folderService = folderService ?? throw new ArgumentNullException(nameof(folderService));
         }
 
-        public IEnumerable<string> GetAllFiles(string sourceFolderPath, Dictionary<string, string> fileTypes)
+        public IEnumerable<string> GetAllFiles(string sourceFolderPath, string fileExt, Dictionary<string, string> fileTypes)
         {
-            if (string.IsNullOrEmpty(sourceFolderPath)) throw new ArgumentNullException("Source folder path is empty");
+            //Always good to validate the input parameter in public methods
+            if (string.IsNullOrEmpty(sourceFolderPath)) return null;
 
             IEnumerable<string> allFiles = null;
             try

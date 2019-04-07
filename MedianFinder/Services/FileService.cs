@@ -19,16 +19,17 @@ namespace MedianFinder.Services
         private string _filePath;
         private string _fileDelimiter;
         private StreamReader FileReader { get; set; }
-
-
+   
         public void InitFileReader(string filePath, string fileDelimiter)
         {
-            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(fileDelimiter)) throw new ArgumentNullException("File path is empty");
+            //Always good to validate the input parameter in public methods
+            if (string.IsNullOrEmpty(filePath) || string.IsNullOrEmpty(fileDelimiter)) return;
 
             _filePath = filePath; _fileDelimiter = fileDelimiter;
 
             string headerString = IterateFile().Take(1).FirstOrDefault();
 
+            //Save the header values for later usage
             _headers = !string.IsNullOrEmpty(headerString) ? headerString.Split(_fileDelimiter).ToList() : throw new InvalidOperationException("Header row is missing");
         }
         public string FileName
@@ -37,7 +38,8 @@ namespace MedianFinder.Services
         }
         public IEnumerable<string> IterateFile(string columnName)
         {
-            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException("Column name is empty");
+            //Always good to validate the input parameter in public methods
+            if (string.IsNullOrEmpty(columnName)) yield return null;
 
             int columnIndex = _headers.FindIndex(x => x == columnName);
 
@@ -48,19 +50,23 @@ namespace MedianFinder.Services
         }
         public string GetValueFromCurrentLine(string columnName)
         {
-            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException("Column name is empty");
+            //Always good to validate the input parameter in public methods
+            if (string.IsNullOrEmpty(columnName)) return null;
 
+            //Find the column index from our header
             int columnIndex = _headers.FindIndex(x => x == columnName);
 
+            //We already have the current line as a string. Let's grab our value
             return _currentLine.Split(_fileDelimiter)[columnIndex];
         }
         private IEnumerable<string> IterateFile()
         {
             using (FileReader = File.OpenText(_filePath))
             {
+                //Save the current line being read in local variable "_currentLine"
                 while ((_currentLine = FileReader.ReadLine()) != null)
-                {
-                    yield return _currentLine;
+                {                    
+                    yield return _currentLine; 
                 }
             }
         }

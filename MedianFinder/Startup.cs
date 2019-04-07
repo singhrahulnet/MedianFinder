@@ -15,11 +15,13 @@ namespace MedianFinder
         private static IServiceProvider _serviceProvider;
         public static IServiceProvider ConfigureServices()
         {
+            //Build configuration
             IConfiguration configuration = new ConfigurationBuilder()
                           .SetBasePath(Directory.GetCurrentDirectory())
                           .AddJsonFile("appsettings.json")
                           .Build();
 
+            //Add services to IoC container
             _serviceProvider = new ServiceCollection()
                                                .AddSingleton(configuration)
                                                .AddSingleton<IConfigService, ConfigService>()
@@ -31,6 +33,7 @@ namespace MedianFinder
                                                .AddScoped<IFolderManager, FolderManager>()
                                                .AddScoped<IDataProcessor, DataProcessor>()
                                                .BuildServiceProvider();
+            //Put config values to static property
             InitConfig();
             return _serviceProvider;
         }
@@ -42,6 +45,8 @@ namespace MedianFinder
             //read configuration for all valid EDI file types e.g. LP or TOU etc and other related data.
             Settings = _configService.GetSection<SourceFolderSettings>(nameof(SourceFolderSettings));           
         }
+
+        //We are done!!
         public static void DisposeServices()
         {
             if (_serviceProvider == null) return;

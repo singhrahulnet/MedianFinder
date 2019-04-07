@@ -39,7 +39,7 @@ namespace MedianFinder.Test.Managers
         public void StartProcess_processes_the_files_from_configured_file_location(IEnumerable<string> filesList)
         {
             //given
-            moqFolderManager.Setup(m => m.GetAllFiles(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(filesList);
+            moqFolderManager.Setup(m => m.GetAllFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(filesList);
             var medianVarianceResult = new MedianVarianceResult();
             moqDataProcessor.Setup(m => m.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(medianVarianceResult);
             moqOutPutService.Setup(m => m.OutputResult(It.IsAny<MedianVarianceResult>())).Verifiable("called");
@@ -50,7 +50,7 @@ namespace MedianFinder.Test.Managers
             sut.StartProcess();
 
             //then
-            moqFolderManager.Verify(v => v.GetAllFiles(It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
+            moqFolderManager.Verify(v => v.GetAllFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
             moqDataProcessor.Verify(v => v.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Exactly(filesList.Count()));
             moqOutPutService.Verify(v => v.OutputResult(It.IsAny<MedianVarianceResult>()), Times.Exactly(filesList.Count()));
         }
