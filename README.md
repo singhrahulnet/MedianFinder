@@ -1,4 +1,4 @@
-﻿﻿# Median Finder
+# Median Finder
 
 ![GitHub release](https://img.shields.io/github/release/singhrahulnet/medianfinder.svg?style=for-the-badge) ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg?style=for-the-badge)
 
