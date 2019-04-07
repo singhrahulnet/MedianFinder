@@ -10,7 +10,7 @@
 
 ##### Environment Setup
 
-> Download/install [![.Net Framework](https://img.shields.io/badge/DotNet-Framework_2.1-blue.svg?style=plastic)](https://www.microsoft.com/net/download/dotnet-core/2.1) to run web api project   
+> Download/install [![.Net Framework](https://img.shields.io/badge/DotNet-Framework_2.1-blue.svg?style=plastic)](https://www.microsoft.com/net/download/dotnet-core/2.1) to run the project   
  
 
 >   Kindly clone /download the repository.
@@ -18,6 +18,8 @@
 
 ##### Running the Application
 > Set source folder path in appsettings.json
+
+<img width="1469" src="https://github.com/singhrahulnet/MedianFinder/refImg/blob/master/config.PNG">
 
 > Hit F5 from within VS2017
 
@@ -42,13 +44,14 @@ types).
 #### Solution
 The console application reads all the configured valid files from a configured path and an output service prints all the variances in a console.
 In order to include more file types (e.g. LP or TOU), simply add the setting to appsettings.json. Apart from file types, file extension/delimiter/upper and lower variance bounds are also configurable in the appsettings.json.
-<img width="1469" alt="MedianFinder Class Diagram" src="https://github.com/singhrahulnet/medianfinder/blob/master/ClassDiagram.png">
+<img width="1469" src="https://github.com/singhrahulnet/MedianFinder/refImg/blob/master/ClassDiagram.PNG">
 #### Repository projects details
 
 | App Name| Project Type | Comments|
 | --- | --- | --- |
 | MedianFinder| Console Application| Application Logic | 
 | MedianFinder.Test | xUnit Project  |Unit Tests|
+
 Having any trouble? Please read out this [documentation](https://github.com/singhrahulnet/medianfinder/blob/master/README.md) or [contact](mailto:singh.rahul.net@gmail.com) to sort it out.
 
 [![HitCount](http://hits.dwyl.io/singhrahulnet/lms/projects/1.svg)](http://hits.dwyl.io/singhrahulnet/lms.api/projects/1) | ![GitHub contributors](https://img.shields.io/github/contributors/singhrahulnet/lms.api.svg?style=plastic)|
