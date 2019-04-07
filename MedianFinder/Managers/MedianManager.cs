@@ -5,9 +5,9 @@ namespace MedianFinder.Managers
 {
     public interface IMedianManager
     {
-        void StartProcess();
+        int StartProcess();
     }
-    public class MedianManager : IMedianManager
+    class MedianManager : IMedianManager
     {
         private readonly IFolderManager _folderManager;
         private readonly IDataProcessor _dataProcessor;
@@ -20,8 +20,9 @@ namespace MedianFinder.Managers
             _outputService = outputService ?? throw new ArgumentNullException(nameof(outputService));
         }
 
-        public void StartProcess()
+        public int StartProcess()
         {
+            int numberofFilesProcessed = 0;
             //Get all valid files paths from the source folder
             var filePaths = _folderManager.GetAllFiles(Startup.Settings.Path, 
                                                        Startup.Settings.FileFormat.Ext, 
@@ -35,7 +36,7 @@ namespace MedianFinder.Managers
                                                         Startup.Settings.FileFormat.Delimiter,
                                                         Startup.Settings.LowerVariancePC,
                                                         Startup.Settings.UpperVariancePC);
-
+                    if (response != null) numberofFilesProcessed++;
                     //print now and move to next file.
                     _outputService.OutputResult(response);
                 }
@@ -44,6 +45,7 @@ namespace MedianFinder.Managers
             {
                 // Yell    Log    Catch  Throw     
             }
+            return numberofFilesProcessed;
         }
     }
 }

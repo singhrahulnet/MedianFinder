@@ -7,7 +7,7 @@ namespace MedianFinder.Services
     {
         TResult GetSection<TResult>(string sectionName) where TResult : class;
     }
-    public class ConfigService : IConfigService
+    class ConfigService : IConfigService
     {
         private readonly IConfiguration _configuration;
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using MedianFinder.Models;
 using System.Linq;
 
-namespace MedianFinder.Test.Managers
+namespace MedianFinder.Test.Unit.Managers
 {
     public class MedianManagerTest : IDisposable
     {

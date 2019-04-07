@@ -8,7 +8,7 @@ namespace MedianFinder.Services
         void OutputResult(MedianVarianceResult result);
     }
 
-    public class ConsoleOutputService : IOutputService
+    class ConsoleOutputService : IOutputService
     {
         public void OutputResult(MedianVarianceResult result)
         {

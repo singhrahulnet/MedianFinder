@@ -10,7 +10,7 @@ namespace MedianFinder.Services
         bool IsValueInMedianRange(decimal median, decimal value, decimal lowerVariancePC, decimal upperVariancePC);
     }
 
-    public class CalculationService : ICalculationService
+    class CalculationService : ICalculationService
     {
         public decimal GetMedian(IEnumerable<string> values)
         {

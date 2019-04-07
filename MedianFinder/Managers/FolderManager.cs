@@ -9,7 +9,7 @@ namespace MedianFinder.Managers
     {
         IEnumerable<string> GetAllFiles(string sourceFolderPath, string fileExt, Dictionary<string, string> fileTypes);
     }
-    public class FolderManager : IFolderManager
+    class FolderManager : IFolderManager
     {
         private readonly IFolderService _folderService;
         

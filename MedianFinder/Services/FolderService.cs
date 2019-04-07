@@ -8,7 +8,7 @@ namespace MedianFinder.Services
     {
         IEnumerable<string> GetFileNames(string sourceFolderPath, string searchPattern);
     }
-    public class FolderService : IFolderService
+    class FolderService : IFolderService
     {
         public IEnumerable<string> GetFileNames(string sourceFolderPath, string searchPattern)
         {

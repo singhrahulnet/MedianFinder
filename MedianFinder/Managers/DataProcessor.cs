@@ -9,7 +9,7 @@ namespace MedianFinder.Managers
     {
         MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC);
     }
-    public class DataProcessor : IDataProcessor
+    class DataProcessor : IDataProcessor
     {
         private readonly ICalculationService _calcService;
         private readonly IFileService _fileService;
