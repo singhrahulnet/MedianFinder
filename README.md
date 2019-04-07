@@ -18,6 +18,7 @@
 
 ##### Running the Application
 > Set source folder path in appsettings.json
+<img width="1469" src="https://github.com/singhrahulnet/MedianFinder/refImg/blob/master/config.PNG">
 
 > Hit F5 from within VS2017
 
@@ -42,7 +43,7 @@ types).
 #### Solution
 The console application reads all the configured valid files from a configured path and an output service prints all the variances in a console.
 In order to include more file types (e.g. LP or TOU), simply add the setting to appsettings.json. Apart from file types, file extension/delimiter/upper and lower variance bounds are also configurable in the appsettings.json.
-<img width="1469" src="https://github.com/singhrahulnet/MedianFinder/blob/master/ClassDiagram.PNG">
+<img width="1469" src="https://github.com/singhrahulnet/MedianFinder/refImg/blob/master/ClassDiagram.PNG">
 #### Repository projects details
 
 | App Name| Project Type | Comments|
