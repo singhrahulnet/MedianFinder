@@ -13,21 +13,22 @@
 > Find median variance by percentage per file
 
 
-### Setup detail
+### Setup Details
 
 #### Environment Setup
 
-> Download/install [![.Net Framework](https://img.shields.io/badge/DotNet-Framework_2.1-blue.svg?style=plastic)](https://www.microsoft.com/net/download/dotnet-core/2.1) to run web api project   
+> Download/install [![.Net Framework](https://img.shields.io/badge/DotNet-Framework_2.1-blue.svg?style=plastic)](https://www.microsoft.com/net/download/dotnet-core/2.1) to run the project   
  
 
->   Kindly clone /download the repository.
+> Download/clone the repository.
 
 
 #### Running the Application
+> Open solution file with Visual Studio
 > Set source folder path in appsettings.json
 <img width="500" src="https://github.com/singhrahulnet/MedianFinder/blob/master/refImg/config.PNG">
 
-> Hit F5 from within VS2017
+> Hit F5 from within Visual Studio
 
 > The output can be viewed in the console window
 
@@ -51,18 +52,18 @@ The console application reads all the configured valid files from a configured p
 
 #### Design Highlights
 ##### Adding a New File Type
-In order to include more file types (e.g. LP or TOU), simply add the setting to appsettings.json.
+    In order to include more file types (e.g. LP or TOU), simply add the setting to appsettings.json.
 
 <img width="500" src="https://github.com/singhrahulnet/MedianFinder/blob/master/refImg/AddNewFileType.PNG">
 
 ##### S.O.L.I.D Principles
-The software design is lucid, extensible and maintainable by adhering to SOLID principles.
+    The software design is lucid, extensible and maintainable by adhering to S.O.L.I.D principles.
 
 ##### Inversion of Control
-The dependencies are inverted using IoC container.
+    The dependencies are inverted using IoC container.
 
 ##### Unit and Integration Tests
-The tests are written to make the software robust. Include the test cases in CI/CD pipeline.
+    The tests are written to make the software robust. Include the test cases in CI/CD pipeline.
 
 #### Class Diagram
 
@@ -72,8 +73,8 @@ The tests are written to make the software robust. Include the test cases in CI/
 ### Support or Contact
 Having any trouble? Please read out this [documentation](https://github.com/singhrahulnet/medianfinder/blob/master/README.md) or [contact](mailto:singh.rahul.net@gmail.com) to sort it out.
 
-[![HitCount](http://hits.dwyl.io/singhrahulnet/lms/projects/1.svg)](http://hits.dwyl.io/singhrahulnet/lms.api/projects/1) | ![GitHub contributors](https://img.shields.io/github/contributors/singhrahulnet/lms.api.svg?style=plastic)|
- | --- | --- |
+[![HitCount](http://hits.dwyl.io/singhrahulnet/lms/projects/1.svg)](http://hits.dwyl.io/singhrahulnet/lms.api/projects/1)  ![GitHub contributors](https://img.shields.io/github/contributors/singhrahulnet/lms.api.svg?style=plastic)
+ 
  
  
 Keep Coding :-) 
