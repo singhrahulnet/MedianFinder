@@ -17,7 +17,7 @@ namespace MedianFinder.Models
         }
         public string FileName { get; set; }
         public decimal Median { get; set; }
-        public List<VarianceData> VarianceData { get; set; }                
+        public List<VarianceData> VarianceData { get; set; }
     }
     public class VarianceData
     {

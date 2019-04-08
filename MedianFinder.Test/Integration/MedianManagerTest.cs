@@ -9,28 +9,28 @@ namespace MedianFinder.Test.Integration
 {
     public class MedianManagerTest : IDisposable
     {
-        IFolderService _folderService = null;
+        IFolderParserService _folderParserService = null;
         IFolderManager _folderManager = null;
         ICalculationService _calculationService = null;
-        IFileService _fileService = null;
+        IFileReaderService _fileReaderService = null;
         IDataProcessor _dataProcessor = null;
         IOutputService _outputService = null;
         public MedianManagerTest()
         {
-            _folderService = new FolderService();
-            _folderManager = new FolderManager(_folderService);
+            _folderParserService = new FolderParserService();
+            _folderManager = new FolderManager(_folderParserService);
             _calculationService = new CalculationService();
-            _fileService = new FileService();
-            _dataProcessor = new DataProcessor(_calculationService, _fileService);
+            _fileReaderService = new FileReaderService();
+            _dataProcessor = new DataProcessor(_calculationService, _fileReaderService);
             _outputService = new ConsoleOutputService();
             Startup.ConfigureServices();
         }
         public void Dispose()
         {
-            _folderService = null;
+            _folderParserService = null;
             _folderManager = null;
             _calculationService = null;
-            _fileService = null;
+            _fileReaderService = null;
             _dataProcessor = null;
             _outputService = null;
         }

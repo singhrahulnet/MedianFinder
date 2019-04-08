@@ -11,11 +11,11 @@ namespace MedianFinder.Managers
     }
     class FolderManager : IFolderManager
     {
-        private readonly IFolderService _folderService;
+        private readonly IFolderParserService _folderParserService;
         
-        public FolderManager(IFolderService folderService)
+        public FolderManager(IFolderParserService folderParserService)
         {
-            _folderService = folderService ?? throw new ArgumentNullException(nameof(folderService));
+            _folderParserService = folderParserService ?? throw new ArgumentNullException(nameof(folderParserService));
         }
 
         public IEnumerable<string> GetAllFiles(string sourceFolderPath, string fileExt, Dictionary<string, string> fileTypes)
@@ -27,7 +27,7 @@ namespace MedianFinder.Managers
             try
             {
 
-                allFiles = _folderService.GetFileNames(sourceFolderPath, fileExt)
+                allFiles = _folderParserService.GetFileNamesFromFolder(sourceFolderPath, fileExt)
                                      .Where(fileName => fileTypes.Any(type => fileName.Contains(type.Key)));
                 //Logic can be more refined. it just checks if filetype is contained in file path
             }

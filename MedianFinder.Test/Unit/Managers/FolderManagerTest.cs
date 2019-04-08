@@ -10,16 +10,16 @@ namespace MedianFinder.Test.Unit.Managers
 {
     public class FolderManagerTest : IDisposable
     {
-        Mock<IFolderService> moqFolderService = null;
+        Mock<IFolderParserService> moqFolderParserService = null;
         public FolderManagerTest()
         {
-            moqFolderService = new Mock<IFolderService>();
+            moqFolderParserService = new Mock<IFolderParserService>();
             Startup.ConfigureServices();
         }
 
         public void Dispose()
         {
-            moqFolderService = null;
+            moqFolderParserService = null;
         }
         public static IEnumerable<object[]> GetFiles()
         {
@@ -42,8 +42,8 @@ namespace MedianFinder.Test.Unit.Managers
         public void GetAllFiles_returns_all_valid_files_based_on_configured_filetypes(IEnumerable<string> filesList, int countOfFiles)
         {
             //given
-            moqFolderService.Setup(m => m.GetFileNames(It.IsAny<string>(), It.Is<string>(p => p == "*.csv"))).Returns(filesList);
-            var sut = new FolderManager(moqFolderService.Object);
+            moqFolderParserService.Setup(m => m.GetFileNamesFromFolder(It.IsAny<string>(), It.Is<string>(p => p == "*.csv"))).Returns(filesList);
+            var sut = new FolderManager(moqFolderParserService.Object);
 
             //when
             var actual = sut.GetAllFiles(Startup.Settings.Path, Startup.Settings.FileFormat.Ext, Startup.Settings.FileTypes);
@@ -52,7 +52,7 @@ namespace MedianFinder.Test.Unit.Managers
             int countReturned = actual == null ? 0 : actual.Count();
 
             Assert.Equal(countOfFiles, countReturned);
-            moqFolderService.Verify(v => v.GetFileNames(It.IsAny<string>(), It.Is<string>(p => p == "*.csv")), Times.Once);
+            moqFolderParserService.Verify(v => v.GetFileNamesFromFolder(It.IsAny<string>(), It.Is<string>(p => p == "*.csv")), Times.Once);
         }
     }
 }

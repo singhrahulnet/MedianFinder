@@ -1,4 +1,4 @@
-# Median Finder
+﻿﻿# Median Finder
 
 ![GitHub release](https://img.shields.io/github/release/singhrahulnet/medianfinder.svg?style=for-the-badge) ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg?style=for-the-badge)
 
@@ -25,6 +25,7 @@
 
 #### Running the Application
 > Open solution file with Visual Studio
+
 > Set source folder path in appsettings.json
 <img width="500" src="https://github.com/singhrahulnet/MedianFinder/blob/master/refImg/config.PNG">
 

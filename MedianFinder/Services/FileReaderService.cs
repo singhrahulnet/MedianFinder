@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace MedianFinder.Services
 {
-    public interface IFileService
+    public interface IFileReaderService
     {
         void InitFileReader(string filePath, string fileDelimiter);
         string FileName { get; }
-        IEnumerable<string> IterateFile(string columnName);
-        string GetValueFromCurrentLine(string columnName);
+        IEnumerable<string> IterateFileOnColumn(string columnName);
+        string GetColumnValueFromCurrentLine(string columnName);
     }
-    class FileService : IFileService
+    class FileReaderService : IFileReaderService
     {
         private List<string> _headers;
         private string _currentLine, _filePath, _fileDelimiter;
@@ -26,7 +26,7 @@ namespace MedianFinder.Services
 
             _filePath = filePath; _fileDelimiter = fileDelimiter;
 
-            string headerString = IterateFile().Take(1).FirstOrDefault();
+            string headerString = IterateFileByLine().Take(1).FirstOrDefault();
 
             //Save the header values for later usage
             _headers = !string.IsNullOrEmpty(headerString) ? headerString.Split(_fileDelimiter).ToList() : throw new InvalidOperationException("Header row is missing");
@@ -37,20 +37,20 @@ namespace MedianFinder.Services
             get => Path.GetFileName(_filePath);
         }
 
-        public IEnumerable<string> IterateFile(string columnName)
+        public IEnumerable<string> IterateFileOnColumn(string columnName)
         {
             //Always good to validate the input parameter in public methods
             if (string.IsNullOrEmpty(columnName)) yield return null;
 
             int columnIndex = _headers.FindIndex(x => x == columnName);
 
-            foreach (var row in IterateFile().Skip(1))
+            foreach (var row in IterateFileByLine().Skip(1))
             {
                 yield return row.Split(_fileDelimiter)[columnIndex];
             }
         }
 
-        public string GetValueFromCurrentLine(string columnName)
+        public string GetColumnValueFromCurrentLine(string columnName)
         {
             //Always good to validate the input parameter in public methods
             if (string.IsNullOrEmpty(columnName)) return null;
@@ -62,7 +62,7 @@ namespace MedianFinder.Services
             return _currentLine.Split(_fileDelimiter)[columnIndex];
         }
 
-        private IEnumerable<string> IterateFile()
+        private IEnumerable<string> IterateFileByLine()
         {
             using (FileReader = File.OpenText(_filePath))
             {

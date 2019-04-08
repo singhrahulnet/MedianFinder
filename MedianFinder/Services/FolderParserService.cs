@@ -4,13 +4,13 @@ using System.IO;
 
 namespace MedianFinder.Services
 {
-    public interface IFolderService
+    public interface IFolderParserService
     {
-        IEnumerable<string> GetFileNames(string sourceFolderPath, string searchPattern);
+        IEnumerable<string> GetFileNamesFromFolder(string sourceFolderPath, string searchPattern);
     }
-    class FolderService : IFolderService
+    class FolderParserService : IFolderParserService
     {
-        public IEnumerable<string> GetFileNames(string sourceFolderPath, string searchPattern)
+        public IEnumerable<string> GetFileNamesFromFolder(string sourceFolderPath, string searchPattern)
         {
             //Always good to validate the input parameter in public methods
             if (string.IsNullOrEmpty(sourceFolderPath)) return null;

@@ -12,12 +12,12 @@ namespace MedianFinder.Managers
     class DataProcessor : IDataProcessor
     {
         private readonly ICalculationService _calcService;
-        private readonly IFileService _fileService;
+        private readonly IFileReaderService _fileReaderService;
 
-        public DataProcessor(ICalculationService calcService, IFileService fileService)
+        public DataProcessor(ICalculationService calcService, IFileReaderService fileReaderService)
         {
             _calcService = calcService ?? throw new ArgumentNullException(nameof(calcService));
-            _fileService = fileService ?? throw new ArgumentNullException(nameof(fileService));
+            _fileReaderService = fileReaderService ?? throw new ArgumentNullException(nameof(fileReaderService));
         }
 
         public MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC)
@@ -35,20 +35,20 @@ namespace MedianFinder.Managers
         private MedianVarianceResult PopulateMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC)
         {
             //Init file reader so that headers/path/delimiter are pre-populated and saved for later usage
-            _fileService.InitFileReader(filepath, fileDelimiter);
+            _fileReaderService.InitFileReader(filepath, fileDelimiter);
 
             //Init result with fileName.
             var result = new MedianVarianceResult
             {
-                FileName = _fileService.FileName,
+                FileName = _fileReaderService.FileName,
                 VarianceData = new List<VarianceData>()
             };
 
             //Let's calculate the median. Pass in the Data Column Name from Model
-            result.Median = _calcService.GetMedian(_fileService.IterateFile(result.DataColumnName));
+            result.Median = _calcService.GetMedian(_fileReaderService.IterateFileOnColumn(result.DataColumnName));
 
             //Iterate each row now
-            foreach (var data in _fileService.IterateFile(result.DataColumnName))
+            foreach (var data in _fileReaderService.IterateFileOnColumn(result.DataColumnName))
             {
                 //Move to next iteration as value is not a decimal
                 if (!decimal.TryParse(data, out decimal dataValue)) continue;
@@ -63,8 +63,8 @@ namespace MedianFinder.Managers
                         Value = dataValue,
 
                         //Populate the date from the line being read
-                        //No need to iterate over again as fileService keeps the current line saved
-                        Date = _fileService.GetValueFromCurrentLine(result.DateTimeColumnName)
+                        //No need to iterate over again as FileReaderService keeps the current line saved
+                        Date = _fileReaderService.GetColumnValueFromCurrentLine(result.DateTimeColumnName)
                     }
                     );
                 }

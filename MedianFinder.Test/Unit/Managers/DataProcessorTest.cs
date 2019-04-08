@@ -11,18 +11,18 @@ namespace MedianFinder.Test.Unit.Managers
     public class DataProcessorTest : IDisposable
     {
         Mock<ICalculationService> moqCalcService;
-        Mock<IFileService> moqFileService;
+        Mock<IFileReaderService> moqFileReaderService;
 
         public DataProcessorTest()
         {
             moqCalcService = new Mock<ICalculationService>();
-            moqFileService = new Mock<IFileService>();
+            moqFileReaderService = new Mock<IFileReaderService>();
             Startup.ConfigureServices();
         }
         public void Dispose()
         {
             moqCalcService = null;
-            moqFileService = null;
+            moqFileReaderService = null;
         }
         public static IEnumerable<object[]> GetInputParams()
         {
@@ -43,13 +43,13 @@ namespace MedianFinder.Test.Unit.Managers
             decimal lowerVariancePC = 20, upperVariancePC = 20, median = 1;
             string filePath = "C:\\TOU_123csv", delimiter = ",";
 
-            moqFileService.Setup(m => m.InitFileReader(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
-            moqFileService.Setup(m => m.FileName).Returns("TOU_123.csv");
-            moqFileService.Setup(m => m.IterateFile(It.IsAny<string>())).Returns(dataValues);
+            moqFileReaderService.Setup(m => m.InitFileReader(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            moqFileReaderService.Setup(m => m.FileName).Returns("TOU_123.csv");
+            moqFileReaderService.Setup(m => m.IterateFileOnColumn(It.IsAny<string>())).Returns(dataValues);
             moqCalcService.Setup(m => m.GetMedian(It.IsAny<IEnumerable<string>>())).Returns(median);
             moqCalcService.Setup(m => m.IsValueInMedianRange(It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(true);
 
-            var sut = new DataProcessor(moqCalcService.Object, moqFileService.Object);
+            var sut = new DataProcessor(moqCalcService.Object, moqFileReaderService.Object);
 
             //When
             var actual = sut.GetMedianVariance(filePath, delimiter, lowerVariancePC, upperVariancePC);
