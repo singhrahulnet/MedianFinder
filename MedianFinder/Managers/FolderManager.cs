@@ -12,7 +12,7 @@ namespace MedianFinder.Managers
     class FolderManager : IFolderManager
     {
         private readonly IFolderParserService _folderParserService;
-        
+
         public FolderManager(IFolderParserService folderParserService)
         {
             _folderParserService = folderParserService ?? throw new ArgumentNullException(nameof(folderParserService));

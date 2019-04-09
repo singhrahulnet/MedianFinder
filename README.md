@@ -1,3 +1,4 @@
+
 # Median Finder
 
 ![GitHub release](https://img.shields.io/github/release/singhrahulnet/medianfinder.svg?style=for-the-badge) ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg?style=for-the-badge)
@@ -24,7 +25,7 @@
 
 
 #### Running the Application
-> Open solution file with Visual Studio
+> Open the solution file with Visual Studio
 
 > Set source folder path in appsettings.json
 <img width="500" src="https://github.com/singhrahulnet/MedianFinder/blob/master/refImg/config.PNG">
@@ -64,7 +65,7 @@ The console application reads all the configured valid files from a configured p
     The dependencies are inverted using IoC container.
 
 ##### Unit and Integration Tests
-    The tests are written to make the software robust. Include the test cases in CI/CD pipeline.
+    The xUnit (with Moq) tests are written to make the software robust. Include the test cases in CI/CD pipeline.
 
 #### Class Diagram
 

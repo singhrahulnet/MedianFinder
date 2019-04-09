@@ -8,7 +8,7 @@ namespace MedianFinder.Test.InputData
         public IEnumerator<object[]> GetEnumerator()
         {
             //THE TEST DATA STRUCTURE
-            //decimal median, decimal value, decimal lowerVariancePC, decimal upperVariancePC, bool result
+            //decimal median, decimal dataValue, decimal lowerVariancePC, decimal upperVariancePC, bool result
 
             //not in range - lower bound
             yield return new object[] { 1, 0.5, 20, 20, false };

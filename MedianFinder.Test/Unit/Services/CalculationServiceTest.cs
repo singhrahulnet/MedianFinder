@@ -25,13 +25,13 @@ namespace MedianFinder.Test.Unit.Services
 
         [Theory]
         [ClassData(typeof(InRangeTestData))]
-        public void IsValueInMedianRange_returns_correct_value(decimal median, decimal value, decimal lowerVariancePC, decimal upperVariancePC, bool result)
+        public void IsValueInMedianRange_returns_correct_value(decimal median, decimal dataValue, decimal lowerVariancePC, decimal upperVariancePC, bool result)
         {
             //Given                        
             var sut = new CalculationService();
 
             //When
-            var actual = sut.IsValueInMedianRange(median, value, lowerVariancePC, upperVariancePC);
+            var actual = sut.IsValueInMedianRange(median, dataValue, lowerVariancePC, upperVariancePC);
 
             //Then
             Assert.Equal(result, actual);

@@ -24,7 +24,6 @@ namespace MedianFinder.Test.Unit.Managers
             moqFolderManager = new Mock<IFolderManager>();
             moqDataProcessor = new Mock<IDataProcessor>();
             moqOutPutService = new Mock<IOutputService>();
-            Startup.ConfigureServices();
         }
 
         public void Dispose()
@@ -41,17 +40,27 @@ namespace MedianFinder.Test.Unit.Managers
         {
             //given
             moqFolderManager.Setup(m => m.GetAllFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(filesList);
-            var medianVarianceResult = new MedianVarianceResult();
-            moqDataProcessor.Setup(m => m.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>())).Returns(medianVarianceResult);
+            var medianVarianceResult = new MedianVarianceResult(new Dictionary<string, string>());
+            moqDataProcessor.Setup(m => m.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<Dictionary<string, string>>())).Returns(medianVarianceResult);
             moqOutPutService.Setup(m => m.OutputResult(It.IsAny<MedianVarianceResult>())).Verifiable("called");
             var sut = new MedianManager(moqFolderManager.Object, moqDataProcessor.Object, moqOutPutService.Object);
-
+            var sourceFolderSettings = new SourceFolderSettings()
+            {
+                FileFormat = new FileFormat() { Delimiter = ",", Ext = "*.csv" },
+                FileTypes = new Dictionary<string, string>() {
+                {"TOU","Energy" },
+                {"LP","Data Value" }
+            },
+                Path = "D:\\sample Files",
+                LowerVariancePC = 20,
+                UpperVariancePC = 20
+            };
             //when
-            sut.StartProcess();
+            sut.StartProcess(sourceFolderSettings);
 
             //then
             moqFolderManager.Verify(v => v.GetAllFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            moqDataProcessor.Verify(v => v.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>()), Times.Exactly(filesList.Count()));
+            moqDataProcessor.Verify(v => v.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(filesList.Count()));
             moqOutPutService.Verify(v => v.OutputResult(It.IsAny<MedianVarianceResult>()), Times.Exactly(filesList.Count()));
         }
     }

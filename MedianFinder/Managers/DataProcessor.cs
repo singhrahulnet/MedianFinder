@@ -7,7 +7,7 @@ namespace MedianFinder.Managers
 {
     public interface IDataProcessor
     {
-        MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC);
+        MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC, Dictionary<string, string> fileTypes);
     }
     class DataProcessor : IDataProcessor
     {
@@ -20,25 +20,25 @@ namespace MedianFinder.Managers
             _fileReaderService = fileReaderService ?? throw new ArgumentNullException(nameof(fileReaderService));
         }
 
-        public MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC)
+        public MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC, Dictionary<string, string> fileTypes)
         {
             //Always good to validate the input parameter in public methods
             if (string.IsNullOrEmpty(filepath) || string.IsNullOrEmpty(fileDelimiter)) return null;
 
             MedianVarianceResult result = null;
 
-            result = PopulateMedianVariance(filepath, fileDelimiter, lowerVariancePC, upperVariancePC);
+            result = PopulateMedianVariance(filepath, fileDelimiter, lowerVariancePC, upperVariancePC, fileTypes);
 
             return result;
         }
 
-        private MedianVarianceResult PopulateMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC)
+        private MedianVarianceResult PopulateMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC, Dictionary<string, string> fileTypes)
         {
             //Init file reader so that headers/path/delimiter are pre-populated and saved for later usage
             _fileReaderService.InitFileReader(filepath, fileDelimiter);
 
             //Init result with fileName.
-            var result = new MedianVarianceResult
+            var result = new MedianVarianceResult(fileTypes)
             {
                 FileName = _fileReaderService.FileName,
                 VarianceData = new List<VarianceData>()

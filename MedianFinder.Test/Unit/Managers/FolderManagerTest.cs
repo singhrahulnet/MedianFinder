@@ -13,8 +13,7 @@ namespace MedianFinder.Test.Unit.Managers
         Mock<IFolderParserService> moqFolderParserService = null;
         public FolderManagerTest()
         {
-            moqFolderParserService = new Mock<IFolderParserService>();
-            Startup.ConfigureServices();
+            moqFolderParserService = new Mock<IFolderParserService>();           
         }
 
         public void Dispose()
@@ -44,9 +43,14 @@ namespace MedianFinder.Test.Unit.Managers
             //given
             moqFolderParserService.Setup(m => m.GetFileNamesFromFolder(It.IsAny<string>(), It.Is<string>(p => p == "*.csv"))).Returns(filesList);
             var sut = new FolderManager(moqFolderParserService.Object);
-
+            var fileTypes = new Dictionary<string, string>() {
+                {"TOU","Energy" },
+                {"LP","Data Value" }
+            };
+            var sourceFolderPath = "D:\\Sample files";
+            var fileFormat = "*.csv";
             //when
-            var actual = sut.GetAllFiles(Startup.Settings.Path, Startup.Settings.FileFormat.Ext, Startup.Settings.FileTypes);
+            var actual = sut.GetAllFiles(sourceFolderPath, fileFormat, fileTypes);
 
             //then
             int countReturned = actual == null ? 0 : actual.Count();

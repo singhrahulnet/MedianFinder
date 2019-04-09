@@ -1,11 +1,12 @@
-﻿using MedianFinder.Services;
+﻿using MedianFinder.Models;
+using MedianFinder.Services;
 using System;
 
 namespace MedianFinder.Managers
 {
     public interface IMedianManager
     {
-        int StartProcess();
+        int StartProcess(SourceFolderSettings settings);
     }
     class MedianManager : IMedianManager
     {
@@ -20,22 +21,24 @@ namespace MedianFinder.Managers
             _outputService = outputService ?? throw new ArgumentNullException(nameof(outputService));
         }
 
-        public int StartProcess()
+        public int StartProcess(SourceFolderSettings settings)
         {
             int numberofFilesProcessed = 0;
             //Get all valid files paths from the source folder
-            var filePaths = _folderManager.GetAllFiles(Startup.Settings.Path, 
-                                                       Startup.Settings.FileFormat.Ext, 
-                                                       Startup.Settings.FileTypes);
+            var filePaths = _folderManager.GetAllFiles(settings.Path,
+                                                       settings.FileFormat.Ext,
+                                                       settings.FileTypes);
 
             try
             {
                 foreach (string filePath in filePaths)
                 {
                     var response = _dataProcessor.GetMedianVariance(filePath,
-                                                        Startup.Settings.FileFormat.Delimiter,
-                                                        Startup.Settings.LowerVariancePC,
-                                                        Startup.Settings.UpperVariancePC);
+                                                        settings.FileFormat.Delimiter,
+                                                        settings.LowerVariancePC,
+                                                        settings.UpperVariancePC,
+                                                        settings.FileTypes);
+
                     if (response != null) numberofFilesProcessed++;
                     //print now and move to next file.
                     _outputService.OutputResult(response);

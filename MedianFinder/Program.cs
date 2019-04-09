@@ -9,15 +9,16 @@ namespace MedianFinder
     {
         static void Main(string[] args)
         {
-            IMedianManager medianManager = Startup
+            IMainManager mainManager = Startup
                            .ConfigureServices()
-                           .GetService<IMedianManager>();           //Setup infrastructure           
+                           .GetService<IMainManager>();             //Setup infrastructure           
 
-            medianManager.StartProcess();                           //Start the process
+
+            mainManager.StartProcess();                             //Start the process
 
             Startup.DisposeServices();                              //Release resources
 
-            Console.Read();                                         //Wait to verify results
+            Console.Read();                                         //Wait to verify resultss
         }
     }
 }

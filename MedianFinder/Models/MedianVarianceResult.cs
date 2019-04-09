@@ -5,14 +5,20 @@ namespace MedianFinder.Models
 {
     public class MedianVarianceResult
     {
+        Dictionary<string, string> FileTypes;
         private string fileInitialPattern = @"(?<fileType>([a-zA-Z]+))[_]";
+
+        public MedianVarianceResult(Dictionary<string, string> fileTypes)
+        {
+            FileTypes = fileTypes;
+        }
         public string DateTimeColumnName { get => "Date/Time"; }
         public string DataColumnName
         {
             get
             {
                 var fileInitial = Regex.Match(FileName, fileInitialPattern);
-                return Startup.Settings.FileTypes[fileInitial.Groups["fileType"].Value];
+                return FileTypes[fileInitial.Groups["fileType"].Value];
             }
         }
         public string FileName { get; set; }

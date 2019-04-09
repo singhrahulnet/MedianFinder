@@ -17,7 +17,6 @@ namespace MedianFinder.Test.Unit.Managers
         {
             moqCalcService = new Mock<ICalculationService>();
             moqFileReaderService = new Mock<IFileReaderService>();
-            Startup.ConfigureServices();
         }
         public void Dispose()
         {
@@ -42,7 +41,10 @@ namespace MedianFinder.Test.Unit.Managers
             //Given            
             decimal lowerVariancePC = 20, upperVariancePC = 20, median = 1;
             string filePath = "C:\\TOU_123csv", delimiter = ",";
-
+            var fileTypes = new Dictionary<string, string>() {
+                {"TOU","Energy" },
+                {"LP","Data Value" }
+            };
             moqFileReaderService.Setup(m => m.InitFileReader(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             moqFileReaderService.Setup(m => m.FileName).Returns("TOU_123.csv");
             moqFileReaderService.Setup(m => m.IterateFileOnColumn(It.IsAny<string>())).Returns(dataValues);
@@ -52,7 +54,7 @@ namespace MedianFinder.Test.Unit.Managers
             var sut = new DataProcessor(moqCalcService.Object, moqFileReaderService.Object);
 
             //When
-            var actual = sut.GetMedianVariance(filePath, delimiter, lowerVariancePC, upperVariancePC);
+            var actual = sut.GetMedianVariance(filePath, delimiter, lowerVariancePC, upperVariancePC, fileTypes);
 
             //Then
             Assert.IsType<MedianVarianceResult>(actual);

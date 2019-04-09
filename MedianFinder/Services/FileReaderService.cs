@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.IO.Abstractions;
+
 
 namespace MedianFinder.Services
 {
@@ -14,11 +16,16 @@ namespace MedianFinder.Services
     }
     class FileReaderService : IFileReaderService
     {
+        private readonly IFileSystem _fileSystem;
         private List<string> _headers;
         private string _currentLine, _filePath, _fileDelimiter;
-        
         private StreamReader FileReader { get; set; }
-   
+
+        public FileReaderService(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
+
         public void InitFileReader(string filePath, string fileDelimiter)
         {
             //Always good to validate the input parameter in public methods
@@ -34,7 +41,7 @@ namespace MedianFinder.Services
 
         public string FileName
         {
-            get => Path.GetFileName(_filePath);
+            get => _fileSystem.Path.GetFileName(_filePath);
         }
 
         public IEnumerable<string> IterateFileOnColumn(string columnName)
@@ -64,12 +71,12 @@ namespace MedianFinder.Services
 
         private IEnumerable<string> IterateFileByLine()
         {
-            using (FileReader = File.OpenText(_filePath))
+            using (FileReader = _fileSystem.File.OpenText(_filePath))
             {
                 //Save the current line being read in local variable "_currentLine"
                 while ((_currentLine = FileReader.ReadLine()) != null)
-                {                    
-                    yield return _currentLine; 
+                {
+                    yield return _currentLine;
                 }
             }
         }
