@@ -68,7 +68,7 @@ The console application reads all the configured valid files from a configured p
     The xUnit (with Moq) tests are written to make the software robust. Include the test cases in CI/CD pipeline.
 
 ##### Immutable Models
-    The model classes are immutable
+    The model classes are immutable.
 
 #### Class Diagram
 
@@ -78,7 +78,7 @@ The console application reads all the configured valid files from a configured p
 ### Support or Contact
 Having any trouble? Please read out this [documentation](https://github.com/singhrahulnet/medianfinder/blob/master/README.md) or [contact](mailto:singh.rahul.net@gmail.com) to sort it out.
 
-[![HitCount](http://hits.dwyl.io/singhrahulnet/lms/projects/1.svg)](http://hits.dwyl.io/singhrahulnet/lms.api/projects/1)  ![GitHub contributors](https://img.shields.io/github/contributors/singhrahulnet/lms.api.svg?style=plastic)
+[![HitCount](http://hits.dwyl.io/singhrahulnet/medianfinder/projects/1.svg)](http://hits.dwyl.io/singhrahulnet/medianfinder/projects/1)  ![GitHub contributors](https://img.shields.io/github/contributors/singhrahulnet/medianfinder.svg?style=plastic)
  
  
  
