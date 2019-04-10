@@ -7,7 +7,7 @@ namespace MedianFinder.Managers
 {
     public interface IDataProcessor
     {
-        MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC, Dictionary<string, string> fileTypes);
+        MedianVarianceResult GetMedianVariance(string filePath, SourceFolderSettings settings);
     }
     class DataProcessor : IDataProcessor
     {
@@ -20,29 +20,29 @@ namespace MedianFinder.Managers
             _fileReaderService = fileReaderService ?? throw new ArgumentNullException(nameof(fileReaderService));
         }
 
-        public MedianVarianceResult GetMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC, Dictionary<string, string> fileTypes)
+        public MedianVarianceResult GetMedianVariance(string filePath, SourceFolderSettings settings)
         {
             //Always good to validate the input parameter in public methods
-            if (string.IsNullOrEmpty(filepath) || string.IsNullOrEmpty(fileDelimiter)) return null;
+            if (string.IsNullOrEmpty(filePath) || settings == null) return null;
 
-            MedianVarianceResult result = null;
 
-            result = PopulateMedianVariance(filepath, fileDelimiter, lowerVariancePC, upperVariancePC, fileTypes);
+            var result = PopulateMedianVariance(filePath, settings);
 
             return result;
         }
 
-        private MedianVarianceResult PopulateMedianVariance(string filepath, string fileDelimiter, decimal lowerVariancePC, decimal upperVariancePC, Dictionary<string, string> fileTypes)
+        private MedianVarianceResult PopulateMedianVariance(string filePath, SourceFolderSettings settings)
         {
             //Init file reader so that headers/path/delimiter are pre-populated and saved for later usage
-            _fileReaderService.InitFileReader(filepath, fileDelimiter);
+            _fileReaderService.InitFileReader(filePath, settings.FileFormat.Delimiter);
 
-            //Init result with fileName.
-            var result = new MedianVarianceResult(fileTypes)
-            {
-                FileName = _fileReaderService.FileName,
-                VarianceData = new List<VarianceData>()
-            };
+            var result = new MedianVarianceResult
+                (
+                    _fileReaderService.FileName,
+                     new List<VarianceData>(),
+                     settings.FileTypes
+                );
+
 
             //Let's calculate the median. Pass in the Data Column Name from Model
             result.Median = _calcService.GetMedian(_fileReaderService.IterateFileOnColumn(result.DataColumnName));
@@ -54,19 +54,14 @@ namespace MedianFinder.Managers
                 if (!decimal.TryParse(data, out decimal dataValue)) continue;
 
                 //Let's find out if our value is within variance range
-                bool inRange = _calcService.IsValueInMedianRange(result.Median, dataValue, lowerVariancePC, upperVariancePC);
+                bool inRange = _calcService.IsValueInMedianRange(result.Median, dataValue, settings.LowerVariancePC, settings.UpperVariancePC);
 
                 if (inRange)
                 {
-                    result.VarianceData.Add(new VarianceData
-                    {
-                        Value = dataValue,
-
-                        //Populate the date from the line being read
-                        //No need to iterate over again as FileReaderService keeps the current line saved
-                        Date = _fileReaderService.GetColumnValueFromCurrentLine(result.DateTimeColumnName)
-                    }
-                    );
+                    //Populate the date from the line being read
+                    //No need to iterate over again as FileReaderService keeps the current line saved
+                    var date = _fileReaderService.GetColumnValueFromCurrentLine(result.DateTimeColumnName);
+                    result.VarianceData.Add(new VarianceData(date, dataValue));
                 }
             }
 

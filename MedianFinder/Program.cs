@@ -1,5 +1,4 @@
-﻿using MedianFinder.Managers;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
 
@@ -9,16 +8,16 @@ namespace MedianFinder
     {
         static void Main(string[] args)
         {
-            IMainManager mainManager = Startup
+            IAppLauncher appLauncher = Startup
                            .ConfigureServices()
-                           .GetService<IMainManager>();             //Setup infrastructure           
+                           .GetService<IAppLauncher>();             //Setup infrastructure           
 
 
-            mainManager.StartProcess();                             //Start the process
+            appLauncher.Launch();                             //Start the process
 
             Startup.DisposeServices();                              //Release resources
 
-            Console.Read();                                         //Wait to verify resultss
+            Console.Read();                                         //Wait to verify results
         }
     }
 }

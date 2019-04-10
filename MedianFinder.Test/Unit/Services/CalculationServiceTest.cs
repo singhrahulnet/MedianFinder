@@ -2,7 +2,6 @@
 using MedianFinder.Test.InputData;
 using System.Collections.Generic;
 using Xunit;
-using System;
 
 namespace MedianFinder.Test.Unit.Services
 {

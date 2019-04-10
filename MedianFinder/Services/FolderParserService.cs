@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.IO.Abstractions;
 
 namespace MedianFinder.Services
 {
@@ -10,6 +10,11 @@ namespace MedianFinder.Services
     }
     class FolderParserService : IFolderParserService
     {
+        private readonly IFileSystem _fileSystem;
+        public FolderParserService(IFileSystem fileSystem)
+        {
+            _fileSystem = fileSystem;
+        }
         public IEnumerable<string> GetFileNamesFromFolder(string sourceFolderPath, string searchPattern)
         {
             //Always good to validate the input parameter in public methods
@@ -29,7 +34,7 @@ namespace MedianFinder.Services
 
         private IEnumerable<string> GetAllFileNames(string sourceFolderPath, string searchPattern)
         {
-            return Directory.EnumerateFiles(sourceFolderPath, searchPattern);
+            return _fileSystem.Directory.EnumerateFiles(sourceFolderPath, searchPattern);
         }
     }
 }

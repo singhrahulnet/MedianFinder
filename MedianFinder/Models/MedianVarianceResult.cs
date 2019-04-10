@@ -5,13 +5,18 @@ namespace MedianFinder.Models
 {
     public class MedianVarianceResult
     {
-        Dictionary<string, string> FileTypes;
         private string fileInitialPattern = @"(?<fileType>([a-zA-Z]+))[_]";
 
-        public MedianVarianceResult(Dictionary<string, string> fileTypes)
+        public MedianVarianceResult(string fileName, List<VarianceData> varianceData, Dictionary<string, string> fileTypes)
         {
+            FileName = fileName;
+            VarianceData = varianceData;
             FileTypes = fileTypes;
         }
+        public string FileName { get; private set; }
+        public decimal Median { get; set; }
+        public List<VarianceData> VarianceData { get; private set; }
+        Dictionary<string, string> FileTypes;
         public string DateTimeColumnName { get => "Date/Time"; }
         public string DataColumnName
         {
@@ -21,13 +26,14 @@ namespace MedianFinder.Models
                 return FileTypes[fileInitial.Groups["fileType"].Value];
             }
         }
-        public string FileName { get; set; }
-        public decimal Median { get; set; }
-        public List<VarianceData> VarianceData { get; set; }
     }
     public class VarianceData
     {
-        public string Date { get; set; }
-        public decimal Value { get; set; }
+        public VarianceData(string date, decimal value)
+        {
+            Date = date; Value = value;
+        }
+        public string Date { get; private set; }
+        public decimal Value { get; private set; }
     }
 }

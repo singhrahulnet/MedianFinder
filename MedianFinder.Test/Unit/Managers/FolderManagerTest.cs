@@ -22,6 +22,9 @@ namespace MedianFinder.Test.Unit.Managers
         }
         public static IEnumerable<object[]> GetFiles()
         {
+            //THE TEST DATA STRUCTURE
+            //IEnumerable<string> filesList, int countOfFiles
+
             //All valid files
             yield return new object[] { new string[] { "LP_1.csv", "LP2.csv", "TOU1.csv" }, 3 };
             //All invalid files

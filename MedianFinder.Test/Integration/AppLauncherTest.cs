@@ -1,14 +1,14 @@
 ﻿using MedianFinder.Managers;
-using MedianFinder.Models;
 using MedianFinder.Services;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.IO.Abstractions;
 using Xunit;
 
 namespace MedianFinder.Test.Integration
 {
-    public class MedianManagerTest : IDisposable
+    public class AppLauncherTest : IDisposable
     {
         IFolderParserService _folderParserService = null;
         IFolderManager _folderManager = null;
@@ -17,46 +17,43 @@ namespace MedianFinder.Test.Integration
         IDataProcessor _dataProcessor = null;
         IOutputService _outputService = null;
         IFileSystem _fileSystem = null;
-
-        public MedianManagerTest()
+        IMedianManager _medianManager = null;
+        IConfigService _configService = null;
+        public AppLauncherTest()
         {
-            _folderParserService = new FolderParserService();
+            _fileSystem = new FileSystem();
+            _folderParserService = new FolderParserService(_fileSystem);
             _folderManager = new FolderManager(_folderParserService);
             _calculationService = new CalculationService();
-            _fileSystem = new FileSystem();
             _fileReaderService = new FileReaderService(_fileSystem);
             _dataProcessor = new DataProcessor(_calculationService, _fileReaderService);
             _outputService = new ConsoleOutputService();
+            _medianManager = new MedianManager(_folderManager, _dataProcessor, _outputService);
+            _configService = new ConfigService(new ConfigurationBuilder()
+                          .SetBasePath(Directory.GetCurrentDirectory())
+                          .AddJsonFile("appsettings.json")
+                          .Build());
         }
         public void Dispose()
         {
             _folderParserService = null;
             _folderManager = null;
             _calculationService = null;
-            _fileSystem = null;
             _fileReaderService = null;
             _dataProcessor = null;
             _outputService = null;
+            _fileSystem = null;
+            _medianManager = null;
+            _configService = null;
         }
         [Fact]
         public void StartProcess_returns_number_of_file_processed()
         {
             //given
-            var settings = new SourceFolderSettings()
-            {
-                FileFormat = new FileFormat() { Delimiter = ",", Ext = "*.csv" },
-                FileTypes = new Dictionary<string, string>() {
-                {"TOU","Energy" },
-                {"LP","Data Value" }
-            },
-                Path = "D:\\sample Files",
-                LowerVariancePC = 20,
-                UpperVariancePC = 20
-            };
-            var sut = new MedianManager(_folderManager, _dataProcessor, _outputService);
+            var sut = new AppLauncher(_configService, _medianManager);
 
             //When
-            var numberofFilesProcessed = sut.StartProcess(settings);
+            var numberofFilesProcessed = sut.Launch();
 
             //Then
             Assert.IsType<int>(numberofFilesProcessed);

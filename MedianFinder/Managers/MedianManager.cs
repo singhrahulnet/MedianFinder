@@ -33,11 +33,7 @@ namespace MedianFinder.Managers
             {
                 foreach (string filePath in filePaths)
                 {
-                    var response = _dataProcessor.GetMedianVariance(filePath,
-                                                        settings.FileFormat.Delimiter,
-                                                        settings.LowerVariancePC,
-                                                        settings.UpperVariancePC,
-                                                        settings.FileTypes);
+                    var response = _dataProcessor.GetMedianVariance(filePath, settings);
 
                     if (response != null) numberofFilesProcessed++;
                     //print now and move to next file.

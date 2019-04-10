@@ -67,6 +67,9 @@ The console application reads all the configured valid files from a configured p
 ##### Unit and Integration Tests
     The xUnit (with Moq) tests are written to make the software robust. Include the test cases in CI/CD pipeline.
 
+##### Immutable Models
+    The model classes are immutable
+
 #### Class Diagram
 
 <img width="1469" src="https://github.com/singhrahulnet/MedianFinder/blob/master/refImg/ClassDiagram.PNG">

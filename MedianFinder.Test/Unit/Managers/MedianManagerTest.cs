@@ -40,8 +40,8 @@ namespace MedianFinder.Test.Unit.Managers
         {
             //given
             moqFolderManager.Setup(m => m.GetAllFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>())).Returns(filesList);
-            var medianVarianceResult = new MedianVarianceResult(new Dictionary<string, string>());
-            moqDataProcessor.Setup(m => m.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<Dictionary<string, string>>())).Returns(medianVarianceResult);
+            var medianVarianceResult = new MedianVarianceResult(It.IsAny<string>(), It.IsAny<List<VarianceData>>(), new Dictionary<string, string>());
+            moqDataProcessor.Setup(m => m.GetMedianVariance(It.IsAny<string>(), It.IsAny<SourceFolderSettings>())).Returns(medianVarianceResult);
             moqOutPutService.Setup(m => m.OutputResult(It.IsAny<MedianVarianceResult>())).Verifiable("called");
             var sut = new MedianManager(moqFolderManager.Object, moqDataProcessor.Object, moqOutPutService.Object);
             var sourceFolderSettings = new SourceFolderSettings()
@@ -60,7 +60,7 @@ namespace MedianFinder.Test.Unit.Managers
 
             //then
             moqFolderManager.Verify(v => v.GetAllFiles(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>()), Times.Once);
-            moqDataProcessor.Verify(v => v.GetMedianVariance(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<Dictionary<string, string>>()), Times.Exactly(filesList.Count()));
+            moqDataProcessor.Verify(v => v.GetMedianVariance(It.IsAny<string>(), It.IsAny<SourceFolderSettings>()), Times.Exactly(filesList.Count()));
             moqOutPutService.Verify(v => v.OutputResult(It.IsAny<MedianVarianceResult>()), Times.Exactly(filesList.Count()));
         }
     }

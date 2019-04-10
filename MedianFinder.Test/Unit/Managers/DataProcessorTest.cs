@@ -25,6 +25,10 @@ namespace MedianFinder.Test.Unit.Managers
         }
         public static IEnumerable<object[]> GetInputParams()
         {
+            //THE TEST DATA STRUCTURE
+            //IEnumerable<string> dataValues, int elementCount
+
+            //Correct count
             yield return new object[] { new string[] { "0.0", "1.0", "2.0" }, 3 };
 
             //Ignore invalid data in stream. 
@@ -39,12 +43,17 @@ namespace MedianFinder.Test.Unit.Managers
         public void GetMedianVariance_returns_correct_variance_count(IEnumerable<string> dataValues, int elementCount)
         {
             //Given            
-            decimal lowerVariancePC = 20, upperVariancePC = 20, median = 1;
-            string filePath = "C:\\TOU_123csv", delimiter = ",";
-            var fileTypes = new Dictionary<string, string>() {
-                {"TOU","Energy" },
-                {"LP","Data Value" }
+            var settings = new SourceFolderSettings
+            {
+                LowerVariancePC = 20,
+                UpperVariancePC = 20,
+                FileFormat = new FileFormat { Delimiter = "," },
+                FileTypes = new Dictionary<string, string>() { { "TOU", "Energy" }, { "LP", "Data Value" } }
             };
+
+            decimal median = 1;
+            string filePath = "C:\\TOU_123.csv";
+
             moqFileReaderService.Setup(m => m.InitFileReader(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             moqFileReaderService.Setup(m => m.FileName).Returns("TOU_123.csv");
             moqFileReaderService.Setup(m => m.IterateFileOnColumn(It.IsAny<string>())).Returns(dataValues);
@@ -54,7 +63,7 @@ namespace MedianFinder.Test.Unit.Managers
             var sut = new DataProcessor(moqCalcService.Object, moqFileReaderService.Object);
 
             //When
-            var actual = sut.GetMedianVariance(filePath, delimiter, lowerVariancePC, upperVariancePC, fileTypes);
+            var actual = sut.GetMedianVariance(filePath, settings);
 
             //Then
             Assert.IsType<MedianVarianceResult>(actual);

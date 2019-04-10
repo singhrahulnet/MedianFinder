@@ -30,7 +30,7 @@ namespace MedianFinder
                                                .AddScoped<IFileSystem, FileSystem>()
                                                .AddScoped<IMedianManager, MedianManager>()
                                                .AddScoped<IFolderManager, FolderManager>()
-                                               .AddScoped<IMainManager, MainManager>()
+                                               .AddScoped<IAppLauncher, AppLauncher>()
                                                .AddScoped<IDataProcessor, DataProcessor>()
                                                .BuildServiceProvider();
 
