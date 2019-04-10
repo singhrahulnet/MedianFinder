@@ -26,15 +26,15 @@ namespace MedianFinder.Test.Unit.Managers
             //IEnumerable<string> filesList, int countOfFiles
 
             //All valid files
-            yield return new object[] { new string[] { "C:\\LP_1.csv", "C:\\LP2.csv", "C:\\TOU1.csv" }, 3 };
+            yield return new object[] { new string[] { "C:\\LP_1.csv", "C:\\LP_2.csv", "C:\\TOU_1.csv" }, 3 };
             //All invalid files
             yield return new object[] { new string[] { "C:\\1.csv", "C:\\2.csv", "C:\\Xyz1.csv" }, 0 };
             //Only LP
-            yield return new object[] { new string[] { "C:\\LP.csv", "C:\\file2.csv", "C:\\file3.csv", "C:\\file4.csv" }, 1 };
+            yield return new object[] { new string[] { "C:\\LP_e.csv", "C:\\file2.csv", "C:\\file3.csv", "C:\\file4.csv" }, 1 };
             //Only TOU
-            yield return new object[] { new string[] { "C:\\file1.csv", "C:\\file2.csv", "C:\\file3.csv", "C:\\TOU_.csv" }, 1 };
+            yield return new object[] { new string[] { "C:\\file1.csv", "C:\\file2.csv", "C:\\file3.csv", "C:\\TOU_ff.csv" }, 1 };
             //LP, TOU and invalid files
-            yield return new object[] { new string[] { "C:\\file1.csv", "C:\\LP_1.csv", "C:\\file3.csv", "C:\\TOU1_.csv" }, 2 };
+            yield return new object[] { new string[] { "C:\\file1.csv", "C:\\LP_1.csv", "C:\\file3.csv", "C:\\TOU_1_.csv" }, 2 };
             //No files found
             yield return new object[] { null, 0 };
         }

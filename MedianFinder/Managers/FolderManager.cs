@@ -24,20 +24,28 @@ namespace MedianFinder.Managers
             if (string.IsNullOrEmpty(sourceFolderPath)) return null;
 
             //Construct regex pattern based on all valid file types
-            Regex fileSelectionPattern = new Regex(Helpers.RegexHelper.FileTypesRegexPattern(fileTypes));
+            string fileNamePattern = Helpers.RegexHelper.FileNamePattern(fileTypes);
+            Regex fileSelectionPattern = new Regex(Helpers.RegexHelper.FileSelectionPattern);
 
-            IEnumerable<string> allFiles = null;
+            IEnumerable<string> allFilePaths = null;
             try
             {
 
-                allFiles = _folderParserService.GetFileNamesFromFolder(sourceFolderPath, fileExt)
-                                     .Where(fileName => fileTypes.Any(type => fileSelectionPattern.IsMatch((fileName))));
+                allFilePaths = _folderParserService.GetFileNamesFromFolder(sourceFolderPath, fileExt)
+                                     //.Where(fileName => fileTypes.Any(type => fileSelectionPattern.IsMatch((fileName))));
+                                     .Where(filePath => fileTypes.Any(
+                                         fileType =>
+                                         {
+                                             var fName = fileSelectionPattern.Match(filePath);
+                                             return (fName.Success && Regex.IsMatch(fName.Groups[1].Value, fileNamePattern));                                            
+                                         }
+                                         ));
             }
             catch (Exception)
             {
                 // Yell    Log    Catch  Throw     
             }
-            return allFiles;
+            return allFilePaths;
         }
     }
 }
