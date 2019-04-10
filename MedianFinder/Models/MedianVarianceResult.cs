@@ -5,8 +5,6 @@ namespace MedianFinder.Models
 {
     public class MedianVarianceResult
     {
-        private string fileInitialPattern = @"(?<fileType>([a-zA-Z]+))[_]";
-
         public MedianVarianceResult(string fileName, List<VarianceData> varianceData, Dictionary<string, string> fileTypes)
         {
             FileName = fileName;
@@ -22,8 +20,8 @@ namespace MedianFinder.Models
         {
             get
             {
-                var fileInitial = Regex.Match(FileName, fileInitialPattern);
-                return FileTypes[fileInitial.Groups["fileType"].Value];
+                var fileInitial = Regex.Match(FileName, Helpers.RegexHelper.FileInitialPattern);
+                return FileTypes[fileInitial.Groups[Helpers.RegexHelper.FileTypeGroupName].Value];
             }
         }
     }

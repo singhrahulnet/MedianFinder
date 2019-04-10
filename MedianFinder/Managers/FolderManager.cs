@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MedianFinder.Managers
 {
@@ -12,7 +13,6 @@ namespace MedianFinder.Managers
     class FolderManager : IFolderManager
     {
         private readonly IFolderParserService _folderParserService;
-
         public FolderManager(IFolderParserService folderParserService)
         {
             _folderParserService = folderParserService ?? throw new ArgumentNullException(nameof(folderParserService));
@@ -23,13 +23,15 @@ namespace MedianFinder.Managers
             //Always good to validate the input parameter in public methods
             if (string.IsNullOrEmpty(sourceFolderPath)) return null;
 
+            //Construct regex pattern based on all valid file types
+            Regex fileSelectionPattern = new Regex(Helpers.RegexHelper.FileTypesRegexPattern(fileTypes));
+
             IEnumerable<string> allFiles = null;
             try
             {
 
                 allFiles = _folderParserService.GetFileNamesFromFolder(sourceFolderPath, fileExt)
-                                     .Where(fileName => fileTypes.Any(type => fileName.Contains(type.Key)));
-                //Logic can be more refined. it just checks if filetype is contained in file path
+                                     .Where(fileName => fileTypes.Any(type => fileSelectionPattern.IsMatch((fileName))));
             }
             catch (Exception)
             {

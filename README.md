@@ -72,7 +72,7 @@ The console application reads all the configured valid files from a configured p
 
 #### Class Diagram
 
-<img width="1469" src="https://github.com/singhrahulnet/MedianFinder/blob/master/refImg/ClassDiagram.PNG">
+<img src="https://github.com/singhrahulnet/MedianFinder/blob/master/refImg/ClassDiagram.PNG">
 
 
 ### Support or Contact
