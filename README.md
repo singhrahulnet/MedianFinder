@@ -1,7 +1,5 @@
 
-# Median Finder
-
-![GitHub release](https://img.shields.io/github/release/singhrahulnet/medianfinder.svg?style=for-the-badge) ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg?style=for-the-badge)
+# Median Finder ![GitHub release](https://img.shields.io/github/release/singhrahulnet/medianfinder.svg?style=for-the-badge) ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg?style=for-the-badge)
 
 ![GitHub Release Date](https://img.shields.io/github/release-date/singhrahulnet/medianfinder.svg?style=plastic) [![.Net Framework](https://img.shields.io/badge/DotNet-Framework_2.1-blue.svg?style=plastic)](https://www.microsoft.com/net/download/dotnet-core/2.1)  ![GitHub language count](https://img.shields.io/github/languages/count/singhrahulnet/medianfinder.svg?style=plastic) ![GitHub top language](https://img.shields.io/github/languages/top/singhrahulnet/medianfinder.svg) 
 
